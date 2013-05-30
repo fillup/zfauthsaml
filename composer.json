@@ -1,6 +1,6 @@
 {
     "name": "fillup/zfauthsaml",
-    "description": "Zend\\Authentication SAML adapter. Wraps existing simpleSAMLphp install.",
+    "description": "Zend\\Authentication SAML adapter. Uses existing simpleSAMLphp install.",
     "type": "library",
     "keywords": [
         "saml",
@@ -10,7 +10,7 @@
         "sso",
         "single-sign-on"
     ],
-    "homepage": "https://github.com/fillup/zfsamlauth",
+    "homepage": "https://github.com/fillup/zfauthsaml",
     "license": "GPL-2.0+",
     "authors": [
         {
