@@ -2,6 +2,8 @@
 namespace Fillup\ZfAuthSaml;
 
 use Zend\Authentication\Adapter\AdapterInterface;
+use Zend\Authentication\Adapter\Exception\InvalidArgumentException;
+use Zend\Authentication\Result;
 
 class Adapter implements AdapterInterface
 {
@@ -9,11 +11,11 @@ class Adapter implements AdapterInterface
     
     public function __construct() 
     {
-        try {
+        //try {
             $this->auth = new \SimpleSAML_Auth_Simple('default-sp');
-        } catch (\Excaption $e){
+        //} catch (\Excaption $e){
             
-        }
+        //}
     }
     
     /**
@@ -25,7 +27,12 @@ class Adapter implements AdapterInterface
      */
     public function authenticate()
     {
-        
+        if(!$this->auth->isAuthenticated()){
+            throw new InvalidArgumentException('User is not authenticated',Result::FAILURE);
+        } else {
+            return new Result(Result::SUCCESS,$this->auth->getAttributes());
+        }
+            
     }
     
     /*
@@ -33,9 +40,19 @@ class Adapter implements AdapterInterface
      * 
      * @return String
      */
-    public function getLoginUrl()
+    public function getLoginUrl($returnUrl=null)
     {
-        return $this->auth->getLoginURL();
+        return $this->auth->getLoginURL($returnUrl);
+    }
+    
+    /*
+     * Get logout url
+     * 
+     * @return String
+     */
+    public function getLogoutUrl($returnUrl=null)
+    {
+        return $this->auth->getLogoutURL($returnUrl);
     }
     
 }
