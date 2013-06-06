@@ -3,6 +3,7 @@ namespace Fillup\ZfAuthSaml\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Authentication\AuthenticationService;
+use Fillup\ZfAuthSaml\Entity\User;
 
 class ZfAuthSamlController extends AbstractActionController
 {

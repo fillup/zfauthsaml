@@ -25,6 +25,16 @@ class User implements UserInterface
      * @var string
      */
     protected $displayName;
+    
+    /**
+     * @var string
+     */
+    protected $firstName;
+    
+    /**
+     * @var string
+     */
+    protected $lastName;
 
     /**
      * @var string
@@ -35,7 +45,17 @@ class User implements UserInterface
      * @var int
      */
     protected $state;
-
+    
+    /**
+     * @var string[]
+     */
+    protected $groups;
+    
+    /**
+     * @var string[]
+     */
+    protected $rawIdentity;
+    
     /**
      * Get id.
      *
@@ -123,6 +143,50 @@ class User implements UserInterface
         $this->displayName = $displayName;
         return $this;
     }
+    
+    /**
+     * Get firstName.
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set firstName.
+     *
+     * @param string $firstName
+     * @return UserInterface
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+    
+    /**
+     * Get lastName.
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * Set lastName.
+     *
+     * @param string $lastName
+     * @return UserInterface
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+        return $this;
+    }
 
     /**
      * Get password.
@@ -165,6 +229,54 @@ class User implements UserInterface
     public function setState($state)
     {
         $this->state = $state;
+        return $this;
+    }
+    
+    /**
+     * Get groups
+     * 
+     * @return string[]
+     */
+    public function getGroups()
+    {
+        if($this->groups === null){
+            return array();
+        } else {
+            return $this->groups;
+        }
+    }
+    
+    /**
+     * Set groups
+     * 
+     * @param string[] $groups
+     * @return UserInterface
+     */
+    public function setGroups($groups)
+    {
+        $this->groups = is_array($groups) ? $groups : array();
+        return $this;
+    }
+    
+    /**
+     * Get ramIdentity
+     * 
+     * @return string[]
+     */
+    public function getRawIdentity()
+    {
+        return $this->rawIdentity;
+    }
+    
+    /**
+     * Set ramIdentity
+     * 
+     * @param string[] $rawIdentity
+     * @return string[]
+     */
+    public function setRawIdentity($rawIdentity)
+    {
+        $this->rawIdentity = $rawIdentity;
         return $this;
     }
 }

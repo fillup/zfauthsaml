@@ -4,6 +4,7 @@ namespace Fillup\ZfAuthSaml;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Adapter\Exception\InvalidArgumentException;
 use Zend\Authentication\Result;
+use Fillup\ZfAuthSaml\Entity\User;
 
 class Adapter implements AdapterInterface
 {
@@ -30,7 +31,16 @@ class Adapter implements AdapterInterface
         if(!$this->auth->isAuthenticated()){
             throw new InvalidArgumentException('User is not authenticated',Result::FAILURE);
         } else {
-            return new Result(Result::SUCCESS,$this->auth->getAttributes());
+            $attrs = $this->auth->getAttributes();
+            $user = new User();
+            $user->setDisplayName($attrs['cn'][0]);
+            $user->setEmail($attrs['mail'][0]);
+            $user->setUsername($attrs['mail'][0]);
+            $user->setFirstName($attrs['givenName'][0]);
+            $user->setLastName($attrs['sn'][0]);
+            $user->setGroups($attrs['groups']);
+            $user->setRawIdentity($attrs);
+            return new Result(Result::SUCCESS,$user);
         }
             
     }

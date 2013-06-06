@@ -9,7 +9,7 @@ At this point I'm not sure if simpleSAMLphp can be used strictly as a library or
 - [x] Implement support for an existing simpleSAMLphp install and use APIs to check if user is authenticated and persist identity information if so.
 - [x] Implement support for BjyAuthorize to grant/deny access based on groups returned by SAML
 - [ ] Move return url path to config file and enable dynamic return url based on originally requested url
-- [ ] Refactor user entity to actually be populated based on SAML data
+- [x] Refactor user entity to actually be populated based on SAML data
 - [ ] Implement local account provisioning on successful first login
 - [ ] Find better way to manage role list/config to prevent error when SAML returns a group/role not already configured. Perhaps support pulling from a RESTful API?
 

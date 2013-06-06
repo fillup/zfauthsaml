@@ -32,8 +32,8 @@ class SamlIdentityProvider implements IdentityProviderInterface
     public function getIdentityRoles()
     {
         $identity = $this->authService->getIdentity();
-        if($identity && is_array($identity['groups'])){
-            return $identity['groups'];
+        if($identity){
+            return $identity->getGroups();
         } else {
             return array($this->defaultRole);
         }

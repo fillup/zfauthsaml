@@ -64,6 +64,7 @@ return array(
     ),
     'service_manager' => array(
         'invokables' => array(
+            'Fillup\ZfAuthSaml\Adapter' => 'Fillup\ZfAuthSaml\Adapter',
             'Fillup\ZfAuthSaml\Provider\Identity\SamlIdentityProvider' => 'Fillup\ZfAuthSaml\Provider\Identity\SamlIdentityProvider',
             'Fillup\ZfAuthSaml\View\RedirectionStrategy' => 'Fillup\ZfAuthSaml\View\RedirectionStrategy',
         ),
