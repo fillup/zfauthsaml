@@ -29,8 +29,7 @@ class ZfAuthSamlController extends AbstractActionController
         if(!$auth->hasIdentity()){
             $this->redirect()->toUrl('/login');
         } else {
-            print_r($auth->getIdentity());
-            die();
+            echo "<pre>".print_r($auth->getIdentity(),true)."</pre>";
         }
     }
     
