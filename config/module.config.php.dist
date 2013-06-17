@@ -1,0 +1,10 @@
+<?php
+
+return array(
+    'zfauthsaml' => array(
+        'logoutReturn' => '',
+        'dynamicLoginRedirect' => true,
+        'staticLoginRedirect' => '',
+        'autoProvisionRoles' => true,
+    )
+);
