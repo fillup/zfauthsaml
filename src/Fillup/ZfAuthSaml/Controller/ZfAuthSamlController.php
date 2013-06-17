@@ -20,6 +20,7 @@ class ZfAuthSamlController extends AbstractActionController
         }
         if(!$hasIdent){
             $authAdapter = new AuthAdapter();
+            $authAdapter->setServiceManager($this->getServiceLocator());
             $loginUrl = $authAdapter->getLoginUrl($config['zfauthsaml']['loginReturn']);
             $this->redirect()->toUrl($loginUrl);
         } else {
@@ -58,6 +59,7 @@ class ZfAuthSamlController extends AbstractActionController
         $config = $this->getServiceLocator()->get('Config');
         $auth = new AuthenticationService();
         $authAdapter = new AuthAdapter();
+        $authAdapter->setServiceManager($this->getServiceLocator());
         try {
             $result = $auth->authenticate($authAdapter);
             if(!$result->isValid()){
