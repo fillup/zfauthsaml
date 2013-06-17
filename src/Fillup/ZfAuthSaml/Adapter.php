@@ -12,11 +12,7 @@ class Adapter implements AdapterInterface
     
     public function __construct() 
     {
-        //try {
-            $this->auth = new \SimpleSAML_Auth_Simple('default-sp');
-        //} catch (\Excaption $e){
-            
-        //}
+        $this->auth = new \SimpleSAML_Auth_Simple('default-sp');
     }
     
     /**

@@ -38,7 +38,8 @@ class ZfAuthSamlController extends AbstractActionController
     {
         $auth = new AuthenticationService();
         if($auth->hasIdentity()){
-            $auth->clearIdentity();
+            //$auth->clearIdentity();
+            unset($_SESSION['Zend_Auth']);
             $authAdapter = new \Fillup\ZfAuthSaml\Adapter();
             $logoutUrl = $authAdapter->getLogoutUrl('http://restapi.local/');
             $this->redirect()->toUrl($logoutUrl);
