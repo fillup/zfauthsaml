@@ -1,6 +1,6 @@
 <?php
 
-namespace Fillup\ZfAuthSaml\Entity;
+namespace ZfAuthSaml\Entity;
 
 use ZfcUser\Entity\UserInterface;
 
@@ -235,26 +235,28 @@ class User implements UserInterface
     /**
      * Get groups
      * 
-     * @return string[]
+     * @return string
      */
     public function getGroups()
     {
-        if($this->groups === null){
-            return array();
+        if(is_array($this->groups)){
+            $groups = implode(',', $this->groups);
         } else {
-            return $this->groups;
+            $groups = $this->groups;
         }
+        
+        return $groups;
     }
     
     /**
      * Set groups
      * 
-     * @param string[] $groups
+     * @param string $groups
      * @return UserInterface
      */
     public function setGroups($groups)
     {
-        $this->groups = is_array($groups) ? $groups : array();
+        $this->groups = is_array($groups) ? implode(',',$groups) : $groups;
         return $this;
     }
     
@@ -265,6 +267,9 @@ class User implements UserInterface
      */
     public function getRawIdentity()
     {
+        if(is_array($this->rawIdentity)){
+            return serialize($this->rawIdentity);
+        }
         return $this->rawIdentity;
     }
     

@@ -1,5 +1,5 @@
 <?php
-namespace Fillup\ZfAuthSaml;
+namespace ZfAuthSaml;
 
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Adapter\Exception\InvalidArgumentException;
@@ -8,7 +8,7 @@ use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
-use Fillup\ZfAuthSaml\Entity\User;
+use ZfAuthSaml\Entity\User;
 
 class Adapter implements AdapterInterface, ServiceManagerAwareInterface
 {
@@ -17,8 +17,11 @@ class Adapter implements AdapterInterface, ServiceManagerAwareInterface
     protected $zfcUserOptions;
     protected $serviceManager;
 
-    public function __construct() 
+    public function __construct(ServiceManager $sm = null) 
     {
+        if(!is_null($sm)){
+            $this->setServiceManager($sm);
+        }
         $this->auth = new \SimpleSAML_Auth_Simple('default-sp');
     }
     
@@ -36,14 +39,37 @@ class Adapter implements AdapterInterface, ServiceManagerAwareInterface
         } else {
             $attrs = $this->auth->getAttributes();
             
+            $zfcUserOptions = $this->getZfcUserOptions();
+            
             // Check if local user already exists
             $userMapper = $this->getZfcUserMapper();
-            if(!$userMapper->findByEmail($attrs['mail'][0])){
+            $existingUser = $userMapper->findByEmail($attrs['mail'][0]);
+            if(!$existingUser){
                 $localUser = $this->instantiateLocalUser();
                 $localUser->setDisplayName($attrs['cn'][0]);
                 $localUser->setPassword('not actually stored');
                 $localUser->setEmail($attrs['mail'][0]);
+                $localUser->setUsername($attrs['mail'][0]);
+                $localUser->setFirstName($attrs['givenName'][0]);
+                $localUser->setLastName($attrs['sn'][0]);
+                $localUser->setGroups($attrs['groups']);
+                $localUser->setRawIdentity($attrs);
+                
+                // If user state is enabled, set the default state value
+                if ($zfcUserOptions->getEnableUserState()) {
+                    if ($zfcUserOptions->getDefaultUserState()) {
+                        $localUser->setState($zfcUserOptions->getDefaultUserState());
+                    }
+                }
+                
                 $userMapper->insert($localUser);
+            } else {
+                if ($zfcUserOptions->getEnableUserState()) {
+                    // Don't allow user to login if state is not in allowed list
+                    if (!in_array($existingUser->getState(), $zfcUserOptions->getAllowedLoginStates())) {
+                        return new Result(Result::FAILURE_UNCATEGORIZED,$existingUser,array('This existing user is not active.'));
+                    }
+                }
             }
             
             $roleProvider = $this->getServiceManager()->get('BjyAuthorize\RoleProviders');
@@ -60,7 +86,7 @@ class Adapter implements AdapterInterface, ServiceManagerAwareInterface
                     $userValidRoles[] = $group;
                 }
             }
-            print_r($userValidRoles);die();
+            
             $user = new User();
             $user->setDisplayName($attrs['cn'][0]);
             $user->setEmail($attrs['mail'][0]);

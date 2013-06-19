@@ -1,5 +1,5 @@
 <?php
-namespace Fillup\ZfAuthSaml\View;
+namespace ZfAuthSaml\View;
 
 use BjyAuthorize\Exception\UnAuthorizedException;
 use Zend\EventManager\EventManagerInterface;

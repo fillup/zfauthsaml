@@ -30,7 +30,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Fillup\\ZfAuthSaml\\": "src/"
+            "ZfAuthSaml\\": "src/"
         }
     }
 }

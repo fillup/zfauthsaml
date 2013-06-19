@@ -7,7 +7,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'zfauthsaml' => 'Fillup\ZfAuthSaml\Controller\ZfAuthSamlController',
+            'zfauthsaml' => 'ZfAuthSaml\Controller\ZfAuthSamlController',
         ),
     ),
     'router' => array(
@@ -64,9 +64,9 @@ return array(
     ),
     'service_manager' => array(
         'invokables' => array(
-            'Fillup\ZfAuthSaml\Adapter' => 'Fillup\ZfAuthSaml\Adapter',
-            'Fillup\ZfAuthSaml\Provider\Identity\SamlIdentityProvider' => 'Fillup\ZfAuthSaml\Provider\Identity\SamlIdentityProvider',
-            'Fillup\ZfAuthSaml\View\RedirectionStrategy' => 'Fillup\ZfAuthSaml\View\RedirectionStrategy',
+            'ZfAuthSaml\Adapter' => 'ZfAuthSaml\Adapter',
+            'ZfAuthSaml\Provider\Identity\SamlIdentityProvider' => 'ZfAuthSaml\Provider\Identity\SamlIdentityProvider',
+            'ZfAuthSaml\View\RedirectionStrategy' => 'ZfAuthSaml\View\RedirectionStrategy',
         ),
     ),
 );

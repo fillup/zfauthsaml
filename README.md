@@ -35,8 +35,8 @@ If you have expertise with simpleSAMLphp or writing extensions/adapters/customiz
 
 ```php
 $settings = array(
-  'user_entity_class' => 'Fillup\ZfAuthSaml\Entity\User',
-  'auth_adapters' => array( 100 => 'Fillup\ZfAuthSaml\Adapter' ),
+  'user_entity_class' => 'ZfAuthSaml\Entity\User',
+  'auth_adapters' => array( 100 => 'ZfAuthSaml\Adapter' ),
 );
 ```
 
@@ -46,7 +46,7 @@ $settings = array(
 
 ```php
 return array(
-  'identity_provider'  => 'Fillup\ZfAuthSaml\Provider\Identity\SamlIdentityProvider',
+  'identity_provider'  => 'ZfAuthSaml\Provider\Identity\SamlIdentityProvider',
   'role_providers'        => array(
         // format: user_role(role_id(varchar), parent(varchar))
         'BjyAuthorize\Provider\Role\Config' => array(
@@ -65,7 +65,7 @@ return array(
         
     ),
   ),
-  'unauthorized_strategy' => 'Fillup\ZfAuthSaml\View\RedirectionStrategy',
+  'unauthorized_strategy' => 'ZfAuthSaml\View\RedirectionStrategy',
 );
 ```
 
@@ -78,7 +78,7 @@ return array(
     'ZfcBase',
     'ZfcUser',
     'BjyAuthorize',
-    'Fillup\ZfAuthSaml',
+    'ZfAuthSaml',
   );
 );
 ```

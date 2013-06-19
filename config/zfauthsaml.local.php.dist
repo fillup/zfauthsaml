@@ -1,0 +1,23 @@
+<?php
+
+return array(
+    'zfauthsaml' => array(
+        /**
+         * Where should the user be taken after successful login?
+         */
+        'redirectAfterLogin' => '/',
+        
+        /**
+         * Where should the user be taken after logout?
+         */
+        'redirectAfterLogout' => '/',
+        
+        /**
+         * When set to true, the action that triggers redirection to login
+         * will be passed as a redirect parameter and user will be taken
+         * there after a successful login
+         */
+        'dynamicLoginRedirect' => true,
+    )
+);
+

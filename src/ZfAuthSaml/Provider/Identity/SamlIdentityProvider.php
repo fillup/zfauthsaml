@@ -1,5 +1,5 @@
 <?php
-namespace Fillup\ZfAuthSaml\Provider\Identity;
+namespace ZfAuthSaml\Provider\Identity;
 
 use BjyAuthorize\Exception\InvalidRoleException;
 use BjyAuthorize\Provider\Identity\ProviderInterface as IdentityProviderInterface;
@@ -33,7 +33,7 @@ class SamlIdentityProvider implements IdentityProviderInterface
     {
         $identity = $this->authService->getIdentity();
         if($identity){
-            return $identity->getGroups();
+            return explode(',', $identity->getGroups());
         } else {
             return array($this->defaultRole);
         }

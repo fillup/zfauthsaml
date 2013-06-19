@@ -1,5 +1,5 @@
 <?php
-namespace Fillup\ZfAuthSaml;
+namespace ZfAuthSaml;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
