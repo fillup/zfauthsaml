@@ -8,10 +8,12 @@ At this point I'm not sure if simpleSAMLphp can be used strictly as a library or
 ## Todo ##
 - [x] Implement support for an existing simpleSAMLphp install and use APIs to check if user is authenticated and persist identity information if so.
 - [x] Implement support for BjyAuthorize to grant/deny access based on groups returned by SAML
-- [ ] Move return url path to config file and enable dynamic return url based on originally requested url
+- [x] Move return url path to config file and enable dynamic return url based on originally requested url
 - [x] Refactor user entity to actually be populated based on SAML data
-- [ ] Implement local account provisioning on successful first login
-- [ ] Find better way to manage role list/config to prevent error when SAML returns a group/role not already configured. Perhaps support pulling from a RESTful API?
+- [x] Implement local account provisioning on successful first login
+- [x] Find better way to manage role list/config to prevent error when SAML returns a group/role not already configured. Perhaps support pulling from a RESTful API?
+- [ ] Further abstract user entity and mapper classes to support user defined entity models that can be persisted
+
 
 ## Needs ##
 If you have expertise with simpleSAMLphp or writing extensions/adapters/customizations for ZfcUser I would love some help, connect with me through github.
@@ -36,7 +38,7 @@ If you have expertise with simpleSAMLphp or writing extensions/adapters/customiz
 ```php
 $settings = array(
   'user_entity_class' => 'ZfAuthSaml\Entity\User',
-  'auth_adapters' => array( 100 => 'ZfAuthSaml\Adapter' ),
+  'auth_adapters' => array( 100 => 'ZfAuthSaml\Authentication\Adapter' ),
 );
 ```
 
@@ -52,7 +54,10 @@ return array(
         'BjyAuthorize\Provider\Role\Config' => array(
             'guest' => array(),
             'user'  => array(),
-            // List all of your groups here that could be returned from SAML
+            // List any groups that from SMAL that you want to identify with 
+            // in your application. You could also load them from a database.
+            // The SamlIdentityProvider will only return roles that are defined
+            // here and are part of the user's identity from the IdP
         ),
   ),
   'guards'                => array(
@@ -82,5 +87,14 @@ return array(
   );
 );
 ```
+7) Update your init_autoloader.php to autoload simpleSAMLphp. For my dev area this looks like:
+```php
+// simpleSAMLphp autoloading
+if (file_exists('vendor/simplesamlphp/lib/_autoload.php')) {
+    $loader = include_once 'vendor/simplesamlphp/lib/_autoload.php';
+}
+```
 
-That should be it, users who are not logged in and do not have access to requested resources should be redirected to /login which will redirect them to the IdP you have configured to login. After login they will come back to simplesaml which will them redirect them to /return on your application which will load their identity into persistance.
+8) Apply schema changes to your user table. This assumes you created the initial user table defined with ZfcUser. Schema file located at ```data/schema.sql```
+
+That should be it, users who are not logged in and do not have access to requested resources should be redirected to /login which will redirect them to the IdP you have configured to login. After login they will come back to simplesaml which will them redirect them to /return on your application which will load their identity into persistence and create a local user one does not already exist.

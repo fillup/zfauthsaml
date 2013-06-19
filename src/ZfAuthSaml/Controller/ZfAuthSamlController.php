@@ -3,7 +3,7 @@ namespace ZfAuthSaml\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Authentication\AuthenticationService;
-use ZfAuthSaml\Adapter as AuthAdapter;
+use ZfAuthSaml\Authentication\Adapter as AuthAdapter;
 
 class ZfAuthSamlController extends AbstractActionController
 {

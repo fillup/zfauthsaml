@@ -1,10 +1,6 @@
 <?php
 
 return array(
-    'zfsamlauth' => array(
-        'default-sp' => 'default-sp',
-        'simpleSAMLphp_path' => __DIR__.'/../src/simpleSAMLphp',
-    ),
     'controllers' => array(
         'invokables' => array(
             'zfauthsaml' => 'ZfAuthSaml\Controller\ZfAuthSamlController',
@@ -64,7 +60,7 @@ return array(
     ),
     'service_manager' => array(
         'invokables' => array(
-            'ZfAuthSaml\Adapter' => 'ZfAuthSaml\Adapter',
+            'ZfAuthSaml\Authentication\Adapter' => 'ZfAuthSaml\Authentication\Adapter',
             'ZfAuthSaml\Provider\Identity\SamlIdentityProvider' => 'ZfAuthSaml\Provider\Identity\SamlIdentityProvider',
             'ZfAuthSaml\View\RedirectionStrategy' => 'ZfAuthSaml\View\RedirectionStrategy',
         ),

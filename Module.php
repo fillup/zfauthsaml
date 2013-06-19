@@ -3,6 +3,6 @@
 /**
  * This file is placed here for compatibility with ZendFramework 2's ModuleManager.
  * It allows usage of this module even without composer.
- * The original Module.php is in 'src/Fillup/ZfAuthSaml' in order to respect PSR-0
+ * The original Module.php is in 'src/ZfAuthSaml' in order to respect PSR-0
  */
-require_once __DIR__ . '/src/Fillup/ZfAuthSaml/Module.php';
+require_once __DIR__ . '/src/ZfAuthSaml/Module.php';

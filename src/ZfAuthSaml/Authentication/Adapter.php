@@ -1,5 +1,5 @@
 <?php
-namespace ZfAuthSaml;
+namespace ZfAuthSaml\Authentication;
 
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Adapter\Exception\InvalidArgumentException;
