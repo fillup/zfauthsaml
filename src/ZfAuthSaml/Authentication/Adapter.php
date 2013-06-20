@@ -16,6 +16,7 @@ class Adapter implements AdapterInterface, ServiceManagerAwareInterface
     protected $zfcUserMapper;
     protected $zfcUserOptions;
     protected $serviceManager;
+    protected $config;
 
     public function __construct(ServiceManager $sm = null) 
     {
@@ -40,34 +41,34 @@ class Adapter implements AdapterInterface, ServiceManagerAwareInterface
             $attrs = $this->auth->getAttributes();
             
             $zfcUserOptions = $this->getZfcUserOptions();
-            
+            $config = $this->getConfig();
             // Check if local user already exists
             $userMapper = $this->getZfcUserMapper();
-            $existingUser = $userMapper->findByEmail($attrs['mail'][0]);
-            if(!$existingUser){
-                $localUser = $this->instantiateLocalUser();
-                $localUser->setDisplayName($attrs['cn'][0]);
-                $localUser->setPassword('not actually stored');
-                $localUser->setEmail($attrs['mail'][0]);
-                $localUser->setUsername($attrs['mail'][0]);
-                $localUser->setFirstName($attrs['givenName'][0]);
-                $localUser->setLastName($attrs['sn'][0]);
-                $localUser->setGroups($attrs['groups']);
-                $localUser->setRawIdentity($attrs);
+            $user = $userMapper->findByEmail($attrs['mail'][0]);
+            if(!$user){
+                $user = $this->instantiateLocalUser();
+                $user->setDisplayName($attrs[$config['displayNameField']][$config['displayNameFieldElement']]);
+                $user->setPassword('not actually stored');
+                $user->setEmail($attrs[$config['emailField']][$config['emailFieldElement']]);
+                $user->setUsername($attrs[$config['usernameField']][$config['usernameFieldElement']]);
+                $user->setFirstName($attrs[$config['firstNameField']][$config['firstNameFieldElement']]);
+                $user->setLastName($attrs[$config['lastNameField']][$config['lastNameFieldElement']]);
+                $user->setGroups($attrs[$config['groupsField']]);
+                $user->setRawIdentity($attrs);
                 
                 // If user state is enabled, set the default state value
                 if ($zfcUserOptions->getEnableUserState()) {
                     if ($zfcUserOptions->getDefaultUserState()) {
-                        $localUser->setState($zfcUserOptions->getDefaultUserState());
+                        $user->setState($zfcUserOptions->getDefaultUserState());
                     }
                 }
                 
-                $userMapper->insert($localUser);
+                $userMapper->insert($user);
             } else {
                 if ($zfcUserOptions->getEnableUserState()) {
                     // Don't allow user to login if state is not in allowed list
-                    if (!in_array($existingUser->getState(), $zfcUserOptions->getAllowedLoginStates())) {
-                        return new Result(Result::FAILURE_UNCATEGORIZED,$existingUser,array('This existing user is not active.'));
+                    if (!in_array($user->getState(), $zfcUserOptions->getAllowedLoginStates())) {
+                        return new Result(Result::FAILURE_UNCATEGORIZED,$user,array('This existing user is not active.'));
                     }
                 }
             }
@@ -87,14 +88,7 @@ class Adapter implements AdapterInterface, ServiceManagerAwareInterface
                 }
             }
             
-            $user = new User();
-            $user->setDisplayName($attrs['cn'][0]);
-            $user->setEmail($attrs['mail'][0]);
-            $user->setUsername($attrs['mail'][0]);
-            $user->setFirstName($attrs['givenName'][0]);
-            $user->setLastName($attrs['sn'][0]);
             $user->setGroups($userValidRoles);
-            $user->setRawIdentity($attrs);
             
             return new Result(Result::SUCCESS,$user);
             
@@ -121,6 +115,31 @@ class Adapter implements AdapterInterface, ServiceManagerAwareInterface
     {
         return $this->auth->getLogoutURL($returnUrl);
     }
+    
+    /**
+     * @param  array $config
+     * @return ZfAuthSaml\Authentication\Adapter
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfig()
+    {
+        if (!is_array($this->config)) {
+            $config = $this->getServiceManager()->get('Config');
+            $this->setConfig($config['zfauthsaml']);
+        }
+
+        return $this->config;
+    }
+    
     
     /**
      * @param  UserServiceOptionsInterface $options

@@ -18,6 +18,27 @@ return array(
          * there after a successful login
          */
         'dynamicLoginRedirect' => true,
+        
+        /**
+         * Settings to map your SAML data structure to the fields
+         * needed by ZfAuthSaml
+         */
+        'firstNameField' => 'givenName',
+        'firstNameFieldElement' => 0,
+        
+        'lastNameField' => 'sn',
+        'lastNameFieldElement' => 0,
+        
+        'displayNameField' => 'cn',
+        'displayNameFieldElement' => 0,
+        
+        'emailField' => 'mail',
+        'emailFieldElement' => 0,
+        
+        'usernameField' => 'mail',
+        'usernameFieldElement' => 0,
+        
+        'groupsField' => 'groups'
     )
 );
 
