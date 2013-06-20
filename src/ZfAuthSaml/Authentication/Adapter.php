@@ -44,7 +44,7 @@ class Adapter implements AdapterInterface, ServiceManagerAwareInterface
             $config = $this->getConfig();
             // Check if local user already exists
             $userMapper = $this->getZfcUserMapper();
-            $user = $userMapper->findByEmail($attrs['mail'][0]);
+            $user = $userMapper->findByEmail($attrs[$config['emailField']][$config['emailFieldElement']]);
             if(!$user){
                 $user = $this->instantiateLocalUser();
                 $user->setDisplayName($attrs[$config['displayNameField']][$config['displayNameFieldElement']]);
