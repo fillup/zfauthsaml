@@ -20,6 +20,28 @@ return array(
         'dynamicLoginRedirect' => true,
         
         /**
+         * Enable/disable the /identity route from displaying raw identity
+         * information. This is useful for debugging
+         */
+        'enableIdentityAction' => true,
+        
+        /**
+         * If you need to add a default role to new users, specify your
+         * class to do the work here. It must implement the 
+         * ZfAuthSaml\Provider\Role\DefaultRoleProviderInterface
+         * 
+         * Set defaultRoleProvider to false to disable
+         * 
+         * If you are using ZfcUser and BjyAuthorize the default settings
+         * should work for you.         * 
+         */
+        'defaultRoleProvider' => 'ZfAuthSaml\Provider\Role\ZendDb',
+        'defaultRoleId' => 'users',
+        'userRoleTable' => 'user_role_linker',
+        'userIdField' => 'user_id',
+        'roleIdField' => 'role_id',
+        
+        /**
          * Settings to map your SAML data structure to the fields
          * needed by ZfAuthSaml
          */

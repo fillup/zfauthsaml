@@ -3,6 +3,7 @@ namespace ZfAuthSaml\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Authentication\AuthenticationService;
+use Zend\View\Model\ViewModel;
 use ZfAuthSaml\Authentication\Adapter as AuthAdapter;
 
 class ZfAuthSamlController extends AbstractActionController
@@ -26,12 +27,20 @@ class ZfAuthSamlController extends AbstractActionController
     
     public function identityAction()
     {
-        $auth = new AuthenticationService();
-        if(!$auth->hasIdentity()){
-            $this->redirect()->toUrl('/login');
+        $config = $this->getServiceLocator()->get('Config');
+        if($config['zfauthsaml']['enableIdentityAction']){
+            $auth = new AuthenticationService();
+            if(!$auth->hasIdentity()){
+                $this->redirect()->toUrl('/login');
+            } else {
+                return new ViewModel(array(
+                    'identity' => $auth->getIdentity()
+                ));
+            }
         } else {
-            echo "<pre>".print_r($auth->getIdentity(),true)."</pre>";
+            $this->redirect()->toUrl('/login');
         }
+        
     }
     
     public function logoutAction()

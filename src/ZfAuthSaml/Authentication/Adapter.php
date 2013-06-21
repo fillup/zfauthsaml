@@ -63,7 +63,27 @@ class Adapter implements AdapterInterface, ServiceManagerAwareInterface
                     }
                 }
                 
-                $userMapper->insert($user);
+                $insert = $userMapper->insert($user);
+                
+                if($insert){
+                    $userId = $user->getId();
+                    if($userId){
+                        if($config['defaultRoleProvider']){
+                            $defaultRoleProvider = new $config['defaultRoleProvider'];
+                            
+                            $addRole = $defaultRoleProvider->addRole(
+                                    $this->getServiceManager(), 
+                                    $config['userRoleTable'], 
+                                    $config['userIdField'], 
+                                    $config['roleIdField'], 
+                                    $userId, 
+                                    $config['defaultRoleId']
+                            );
+                        }
+                    }
+                } else {
+                    return new Result(Result::FAILURE_IDENTITY_NOT_FOUND,$user,array('Unable to create local user'));
+                }
             } else {
                 if ($zfcUserOptions->getEnableUserState()) {
                     // Don't allow user to login if state is not in allowed list
