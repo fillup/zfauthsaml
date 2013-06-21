@@ -1,3 +1,8 @@
+<?php
+    if(!$identity){
+        echo "disabled";
+    } else {
+?>
 <h1>User Identity Information</h1>
 <pre>
 <?php echo print_r($identity,true); ?>
@@ -6,3 +11,6 @@
 <pre>
 <?php echo print_r(unserialize($identity->getRawIdentity()),true); ?>
 </pre>
+<?php
+    }
+?>

@@ -38,9 +38,10 @@ class ZfAuthSamlController extends AbstractActionController
                 ));
             }
         } else {
-            $this->redirect()->toUrl('/login');
+            return new ViewModel(array(
+                'identity' => false
+            ));
         }
-        
     }
     
     public function logoutAction()
